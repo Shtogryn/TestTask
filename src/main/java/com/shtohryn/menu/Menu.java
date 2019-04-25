@@ -4,6 +4,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.shtohryn.model.Department;
+import com.shtohryn.model.EmployeeEntity;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 
@@ -16,10 +18,12 @@ public class Menu {
     public Menu() {
         menu = new LinkedHashMap<>();
         methodsMenu = new LinkedHashMap<>();
-        menu.put("A", "   A - Read all table");
-        menu.put("B", "   B - Read customer table for know dish name");
-        menu.put("C", "   C - Insert new order for customer table");
-        menu.put("Q", "   Q - exit");
+        menu.put("1", "   1 - Read all table");
+        menu.put("2", "   2 - Read customer table for know dish name");
+        menu.put("3", "   3 - Insert new order for customer table");
+        menu.put("4", "   4 - Insert new order for customer table");
+        menu.put("5", "   5 - Insert new order for customer table");
+        menu.put("q", "   q - exit");
     }
 
     static {
@@ -31,7 +35,7 @@ public class Menu {
     }
 
     public static Session getSession() throws HibernateException {
-        return ourSessionFactory.openSession(); //return opened session
+        return ourSessionFactory.openSession();
     }
 
     private void outputMenu() {
@@ -63,7 +67,22 @@ public class Menu {
                 methodsMenu.get(keyMenu).print();
             } catch (Exception e) {
             }
-        } while (!keyMenu.equals("Q"));
+        } while (!keyMenu.equals("q"));
     }
+
+    private void ReadDepartmentTable() {
+        final Session session = getSession();
+        Scanner input = new Scanner(System.in);
+        System.out.println("Input number table for Dish_name: ");
+        String table_in = input.next();
+
+        Department departmentStatistic = (Department) session.load(Department.class, table_in);
+        if (departmentStatistic != null) {
+            System.out.format("\n%s: %s\n", table_in, "Dish_name");
+            for (EmployeeEntity obj : departmentStatistic.getLectors())
+                System.out.format("    %s\n", obj.
+        } else System.out.println("invalid number of table");
+    }
+
 }
 
